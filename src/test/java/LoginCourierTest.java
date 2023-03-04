@@ -15,7 +15,7 @@ public class LoginCourierTest {
     private Credentials credentials;
     private CourierClient courierClient;
     private Courier courier;
-    CourierAssertions courierAssertions;
+    private CourierAssertions courierAssertions;
     int idCourier;
 
     @Before
@@ -33,15 +33,15 @@ public class LoginCourierTest {
     @Description("Проверка кода состояния на непустом id")
     public void courierCanSuccessfullyLogin() {
         ValidatableResponse responseLoginCourier = courierClient.loginCourier(credentials);
-        courierAssertions.LoginCourierSuccessfully(responseLoginCourier);
         idCourier = responseLoginCourier.extract().path("id");
+        courierAssertions.loginCourierSuccessfully(responseLoginCourier);
     }
 
     @Test
     @DisplayName("Вход без заполнения логина")
     @Description("Проверка авторизации без ввода логина. Проверка кода состояния")
     public void courierLoginUnsuccessfullyWithoutLogin() {
-        Credentials credentialsWithoutLogin = new Credentials("", courier.getPassword()); // c null тесты виснут
+        Credentials credentialsWithoutLogin = new Credentials("", courier.getPassword());
         ValidatableResponse responseLoginErrorMessage = courierClient.loginCourier(credentialsWithoutLogin).statusCode(400);
         responseLoginErrorMessage.assertThat().body("message", equalTo("Недостаточно данных для входа"));
     }

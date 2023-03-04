@@ -28,10 +28,10 @@ public class CreateCourierTest {
     @Description("Тест на успешное создание с проверкой кода состояния")
     public void courierCanBeCreatedWith201CodeMessageOk() {
         ValidatableResponse responseCreateCourier = courierClient.createCourier(courier);
-        courierAssertions.creatingCourierSuccessfully(responseCreateCourier);
         Credentials credentials = Credentials.from(courier);
         ValidatableResponse responseLoginCourier = courierClient.loginCourier(credentials);
         idCourier = responseLoginCourier.extract().path("id");
+        courierAssertions.creatingCourierSuccessfully(responseCreateCourier);
     }
 
     @Test
